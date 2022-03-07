@@ -2,7 +2,18 @@
 
 const router = require("express").Router();
 
-const getTestController = require("../../controllers/test/getTestController");
+
+//loading the required controllers
+
+const {
+
+    test: {
+
+        getTestController
+
+    }
+
+} = require("../../controllers/index");
 
 //routes
 
