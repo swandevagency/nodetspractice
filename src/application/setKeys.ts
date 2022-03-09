@@ -1,6 +1,3 @@
-
-
-
 module.exports = () => {
     //configuring the dovenv
     const dotenv = require("dotenv")
@@ -11,15 +8,14 @@ module.exports = () => {
         
         if (process.env.NODE_ENV === 'production') {
 
-            return require('./store/production')
+            return require('../../config/keys/production')
 
         }
 
-        return require('./store/development');
+        return require('../../config/keys/development');
 
     }
     
     global.keys = keys();
-    return keys();
      
 }

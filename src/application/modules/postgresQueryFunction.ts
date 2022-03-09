@@ -1,17 +1,15 @@
-module.exports = (dbCommand: string) => {
+const queryFunction = (dbCommand: string) => {
+
     return new Promise(async(resolve, reject) => {
-        //defining a posgress client instance
-        const {Client} = require("pg")
         
-        const client = new Client(keys.databaseInfo);
     
         // connecting to the posgresql client
     
         try {
     
-            await client.connect();
+            await dbClient.connect();
             console.log("connected to the databse");
-            const result = await client.query(dbCommand);
+            const result = await dbClient.query(dbCommand);
             resolve(result);
     
         } catch (e) {
@@ -20,8 +18,8 @@ module.exports = (dbCommand: string) => {
     
         } finally{
     
-            client.end();
+            dbClient.end();
     
         }
-    }) 
+    });
 }
