@@ -1,9 +1,10 @@
 
+
+
 module.exports = () => {
     //configuring the dovenv
     const dotenv = require("dotenv")
     dotenv.config();
-
 
     // defining the devKey && prod Key
     const keys = () => {
@@ -17,7 +18,8 @@ module.exports = () => {
         return require('./store/development');
 
     }
-
-    return keys() ;
+    
+    global.keys = keys();
+    return keys();
      
 }

@@ -3,29 +3,21 @@
 const morgan = require("morgan");
 const cors = require("cors");
 
-// defining the Key interface
-interface Keys {
-
-    serverInfo: {
-        port: number,
-        baseURL: string
-    }
-    
-}
-
-module.exports = (server: any, keys: Keys) => {
-    
-
-    //exporting the required keys
-    const {
-        serverInfo: {
-            port,
-            baseURL
-        }
-    } = keys;
+// requiring the postgress client for nodejs
 
 
-    // defining the application
+
+module.exports = async(server: any) => {
+
+    // setting the keys
+    require("../config/setKeys")();
+
+    // setting the controllers 
+    require("./controllers/setControllers")();
+
+    global.query = require("./database/query");
+
+    // defining the server application
     const app = server();
 
     // requiring the server middlewares
@@ -48,12 +40,14 @@ module.exports = (server: any, keys: Keys) => {
 
     app.use(cors(corsOpts));
 
+    global.router = server.Router();
+
     // loading the routes
     
-    require("./routes/index")(app, baseURL);
+    require("./routes/index")(app, keys.serverInfo.baseURL);
 
     // listening to the port we supposed to
-    app.listen(port, () => {
-        console.log(`listening to the port ${port}`);
+    app.listen(keys.serverInfo.port, () => {
+        console.log(`listening to the port ${keys.serverInfo.port}`);
     })
 }

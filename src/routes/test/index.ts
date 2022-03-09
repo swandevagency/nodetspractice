@@ -1,9 +1,4 @@
-// reqruing the Router
-
-const router = require("express").Router();
-
-
-//loading the required controllers
+// importing the controllers
 
 const {
 
@@ -13,11 +8,13 @@ const {
 
     }
 
-} = require("../../controllers/index");
+} = controllers;
 
-//routes
+
+// setting routes
 
 router.get('/', getTestController);
 
+// exporting routes
 
 module.exports = router;
