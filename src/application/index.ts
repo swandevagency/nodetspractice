@@ -1,5 +1,6 @@
 // loading the deps
 const server = require("express");
+import setLogger from "./setLogger"
 
 
 module.exports = async() => {
@@ -10,11 +11,12 @@ module.exports = async() => {
     // setting the keys
     require("./setKeys")();
 
+    setLogger();
+
     // set database functions
     require("./setDatabase")();
 
     // setting routes
-
     require("./setRoutes")(server, app);
 
     // initiating the application
@@ -24,11 +26,11 @@ module.exports = async() => {
 
         await app.listen(port);
 
-        console.log(`listening to port ${port}`);
+        logger.debug(`listening to port ${port}`);
 
     } catch (error) {
 
-        console.log(error);
+        logger.error(error);
 
     }
     

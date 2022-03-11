@@ -8,7 +8,7 @@ const queryFunction = (dbCommand: string) => {
         try {
     
             await dbClient.connect();
-            console.log("connected to the databse");
+            logger.debug("connected to the databse");
             const result = await dbClient.query(dbCommand);
             resolve(result);
     

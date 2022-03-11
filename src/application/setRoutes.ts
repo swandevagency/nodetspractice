@@ -1,6 +1,8 @@
 // requiring
-const morgan = require("morgan");
+import morgan from "./modules/morganLogic"
 const cors = require("cors");
+const hpp = require('hpp');
+const tooBusy = require("./modules/tooBusy");
 const callBack = require("./modules/expressCallBack");
 const routes = require("../../config/routes");
 const controllers = require("../../config/controllers");
@@ -10,8 +12,23 @@ const {corsPolicies, serverInfo} = keys;
 module.exports = async(server: any, app: any) => {
 
     // setting the server middlewares
-    app.use(server.json());
-    app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
+
+    // making sure server can handle requests
+    app.use(tooBusy);
+
+    // preventing extreamly large requests
+    app.use(server.urlencoded({ extended: true, limit: "1kb" }));
+    app.use(server.json({ limit: "1kb" }));
+
+    app.use(morgan);
+
+    // preventing HTTP Parameter Pollution
+    app.use(hpp());
+
+    //  catching uncaught exceptions
+    process.on('uncaughtException', (err, origin) => {
+        logger.error(`Caught exception: ${err} Exception origin: ${origin}`)
+    });
 
     // setting the cors policies
     app.use(cors(corsPolicies));
@@ -19,7 +36,7 @@ module.exports = async(server: any, app: any) => {
     try {
 
         // setting controllers
-        const importedControllers = await require("./modules/getControllers")(controllers);
+        const importedControllers = await require("./modules/getFunctions")(controllers, "../../controllers");
 
         // setting the routes
         routes.forEach(async(route:any) => {
@@ -35,7 +52,7 @@ module.exports = async(server: any, app: any) => {
         });
 
     } catch (error) {
-        console.log(error);
+        logger.error(error);
     }
     
 }

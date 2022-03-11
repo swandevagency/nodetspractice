@@ -13,16 +13,26 @@ module.exports = function(controller:any) {
             path: req.path,
             headers: req.headers
         }
+
+        // setting useCases
+        const UseCases = require("../../../config/useCases");
+
+        require("./getUseCases")(UseCases, "../../useCases").then((useCases: any) =>
+
+            controller(httpRequest, useCases)
+
+        ).then((httpResponse:any) => {
+
+            if (httpResponse.headers) {
+                res.set(httpResponse.headers);
+            }
+            res.type('json');
+            res.status(httpResponse.statusCode).send(httpResponse.body);
+
+        })
+        .catch((e:any) => res.status(500).send({ error: 'An unkown error occurred.' }))
         
-        controller(httpRequest)
-            .then((httpResponse:any) => {
-                if (httpResponse.headers) {
-                res.set(httpResponse.headers)
-                }
-                res.type('json')
-                res.status(httpResponse.statusCode).send(httpResponse.body)
-            })
-            .catch((e:any) => res.status(500).send({ error: 'An unkown error occurred.' }))
+        
   
     }
 }
