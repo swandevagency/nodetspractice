@@ -1,4 +1,5 @@
 // initiating the backend application
-const initiateApplication = require('./src/application/index');
+import initiateApplication from './src/application/index';
+
 
 initiateApplication();

@@ -1,4 +1,4 @@
-module.exports = async(items: any, baseURL: string) => {
+export default async(items: any, baseURL: string) => {
     
     
     return new Promise((resolve, reject) => {

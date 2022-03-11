@@ -1,4 +1,4 @@
-const queryFunction = (dbCommand: string) => {
+export default (dbCommand: string) => {
 
     return new Promise(async(resolve, reject) => {
         

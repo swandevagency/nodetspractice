@@ -1,8 +1,10 @@
-module.exports = () => {
+import postgresQueryFunction from "./modules/postgresQueryFunction";
+import {Client} from "pg"
 
+export default  () => {
+    
+    
     // defining a db client
-
-    const {Client} = require("pg")
         
     const client = new Client(keys.databaseInfo);
 
@@ -10,6 +12,6 @@ module.exports = () => {
 
     // defining a query for simple query functions
 
-    global.query = require("./modules/postgresQueryFunction");
+    global.query = postgresQueryFunction
 
 }

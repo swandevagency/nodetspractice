@@ -1,4 +1,4 @@
-module.exports = {
+export default  {
 
     serverInfo: {
         port: process.env.PORT,

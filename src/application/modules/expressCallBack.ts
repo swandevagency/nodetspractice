@@ -1,4 +1,6 @@
-module.exports = function(controller:any) {
+import UseCases from "../../../config/useCases";
+import getUseCases from "./getUseCases";
+export default function(controller:any) {
     
     return (req:any, res:any) => {
 
@@ -15,9 +17,9 @@ module.exports = function(controller:any) {
         }
 
         // setting useCases
-        const UseCases = require("../../../config/useCases");
-
-        require("./getUseCases")(UseCases, "../../useCases").then((useCases: any) =>
+        
+        
+        getUseCases(UseCases, "../../useCases").then((useCases: any) =>
 
             controller(httpRequest, useCases)
 

@@ -1,8 +1,8 @@
 // each object should have a name and a url property
 
-module.exports = [
+export default [
     {
-        name: "user",
-        url: "/user/index"
+        name: "adminAuth",
+        url: "/adminAuth/index"
     }
 ]

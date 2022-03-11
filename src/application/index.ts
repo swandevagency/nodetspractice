@@ -1,23 +1,27 @@
 // loading the deps
-const server = require("express");
-import setLogger from "./setLogger"
+import server from "express";
+
+import setLogger from "./setLogger";
+import setKeys from "./setKeys";
+import setDatabase from "./setDatabase";
+import setRoutes from "./setRoutes";
 
 
-module.exports = async() => {
+export default  async() => {
 
     // defining the application
     const app = server();
 
     // setting the keys
-    require("./setKeys")();
+    setKeys();
 
     setLogger();
 
     // set database functions
-    require("./setDatabase")();
+    setDatabase();
 
     // setting routes
-    require("./setRoutes")(server, app);
+    setRoutes(server, app);
 
     // initiating the application
     try {

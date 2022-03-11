@@ -1,15 +1,16 @@
 // requiring
 import morgan from "./modules/morganLogic"
-const cors = require("cors");
-const hpp = require('hpp');
-const tooBusy = require("./modules/tooBusy");
-const callBack = require("./modules/expressCallBack");
-const routes = require("../../config/routes");
-const controllers = require("../../config/controllers");
+import cors from "cors";
+import hpp from "hpp";
+import tooBusy from "./modules/tooBusy";
+import callBack from "./modules/expressCallBack";
+import routes from "../../config/routes";
+import controllers from "../../config/controllers";
+import getFunctions from "./modules/getFunctions";
 const {corsPolicies, serverInfo} = keys;
 
 
-module.exports = async(server: any, app: any) => {
+export default async(server: any, app: any) => {
 
     // setting the server middlewares
 
@@ -36,7 +37,7 @@ module.exports = async(server: any, app: any) => {
     try {
 
         // setting controllers
-        const importedControllers = await require("./modules/getFunctions")(controllers, "../../controllers");
+        const importedControllers = await getFunctions(controllers, "../../controllers");
 
         // setting the routes
         routes.forEach(async(route:any) => {

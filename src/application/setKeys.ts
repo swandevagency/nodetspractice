@@ -1,6 +1,9 @@
-module.exports = () => {
+import productionKeys from "../../config/keys/production";
+import developmentKeys from "../../config/keys/development";
+import dotenv from "dotenv";
+
+export default  () => {
     //configuring the dovenv
-    const dotenv = require("dotenv")
     dotenv.config();
 
     // defining the devKey && prod Key
@@ -8,11 +11,11 @@ module.exports = () => {
         
         if (process.env.NODE_ENV === 'production') {
 
-            return require('../../config/keys/production')
+            return productionKeys;
 
         }
 
-        return require('../../config/keys/development');
+        return developmentKeys;
 
     }
     
