@@ -20,7 +20,7 @@ export default async(request: any, useCases: any) => {
     
         }
 
-    } catch (error) {
+    } catch (error: any) {
 
         logger.error(error);
 

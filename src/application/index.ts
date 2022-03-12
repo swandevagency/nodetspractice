@@ -9,22 +9,22 @@ import setRoutes from "./setRoutes";
 
 export default  async() => {
 
-    // defining the application
-    const app = server();
-
-    // setting the keys
-    setKeys();
-
-    setLogger();
-
-    // set database functions
-    setDatabase();
-
-    // setting routes
-    setRoutes(server, app);
-
-    // initiating the application
     try {
+        // defining the application
+        const app = server();
+    
+        // setting the keys
+        await setKeys();
+    
+        await setLogger();
+    
+        // set database functions
+        await setDatabase();
+    
+        // setting routes
+        await setRoutes(server, app);
+    
+        // initiating the application
 
         const {port} = keys.serverInfo;
 

@@ -4,6 +4,7 @@ export default async(request: any, useCases: any) => {
         'Content-Type': 'application/json'
     }
 
+    
     try {
         
         const {
@@ -28,7 +29,7 @@ export default async(request: any, useCases: any) => {
             headers,
             statusCode: 400,
             body: {
-                error: error.message
+                error: error
             }
     
         }

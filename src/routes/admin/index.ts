@@ -1,4 +1,4 @@
-export default (app:any, controllers:any, callBack:any) => {
+module.exports = (app:any, controllers:any, callBack:any) => {
 
     const {
 
@@ -13,7 +13,7 @@ export default (app:any, controllers:any, callBack:any) => {
     
     app.get('/login', callBack(login));
     app.get('/register', callBack(register));
-
+    app.get('/checkAuthStatus', callBack(checkAuthStatus));
 
     return app;
     

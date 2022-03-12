@@ -2,7 +2,7 @@ import productionKeys from "../../config/keys/production";
 import developmentKeys from "../../config/keys/development";
 import dotenv from "dotenv";
 
-export default  () => {
+export default () => {
     //configuring the dovenv
     dotenv.config();
 
@@ -18,6 +18,7 @@ export default  () => {
         return developmentKeys;
 
     }
+    
     
     global.keys = keys();
      

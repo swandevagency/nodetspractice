@@ -3,7 +3,7 @@ import login from "./login";
 import checkAuthStatus from "./checkAuthStatus";
 
 
-export default  {
+module.exports =  {
     login,
     checkAuthStatus,
     register
