@@ -6,6 +6,7 @@ import tooBusy from "./modules/tooBusy";
 import callBack from "./modules/expressCallBack";
 import routes from "../../config/routes";
 import controllers from "../../config/controllers";
+import frameworks from "../../config/frameworks";
 import getFunctions from "./modules/getFunctions";
 
 
@@ -39,6 +40,8 @@ export default async(server: any, app: any) => {
         // setting controllers
         const importedControllers = await getFunctions(controllers, "../../controllers");
 
+        const importedFrameworks = await getFunctions(frameworks, "../../frameworks")
+
         // setting the routes
         routes.forEach(async(route:any) => {
             
@@ -48,7 +51,7 @@ export default async(server: any, app: any) => {
             
             app.use(
                 `${serverInfo.baseURL}/${route.name}`, 
-                require(`${routesBaseURL}${route.url}`)(router, importedControllers, callBack)
+                require(`${routesBaseURL}${route.url}`)(router, importedControllers, callBack, importedFrameworks)
             );
 
         });

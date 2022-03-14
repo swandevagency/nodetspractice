@@ -8,16 +8,15 @@ export default (items: any, baseURL: string) => {
     return new Promise(async(resolve, reject) => {
 
         const importedItems:any = {};
-
-        
         
         
         try {
 
-            const databaseFunctions:any = await getFunctions(DatabaseFunctions, "../../databaseFunctions");
-            const enteties:any = await getFunctions(Enteties, "../../enteties");
+            global.databaseFunctions = await getFunctions(DatabaseFunctions, "../../databaseFunctions");
+            global.enteties = await getFunctions(Enteties, "../../enteties");
+            
             items.forEach((item: any) => {
-                importedItems[item.name] =  require(`${baseURL}${item.url}`)(databaseFunctions, enteties);
+                importedItems[item.name] =  require(`${baseURL}${item.url}`);
             });
     
             resolve(importedItems);

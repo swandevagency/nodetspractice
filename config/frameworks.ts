@@ -2,7 +2,7 @@
 
 export default [
     {
-        name: "admin",
-        url: "/admin/index"
+        name: "generatePassword",
+        url: "/generatePassword/index"
     }
 ]

@@ -1,6 +1,6 @@
 import UseCases from "../../../config/useCases";
 import getUseCases from "./getUseCases";
-export default function(controller:any, isMiddleware:boolean = false) {
+export default function(controller:any, lable:string = 'asRouteHandler', frameworks: any = {}) {
     
     return (req:any, res:any, next: any) => {
 
@@ -15,14 +15,13 @@ export default function(controller:any, isMiddleware:boolean = false) {
             path: req.path,
             headers: req.headers
         }
-        logger.debug(isMiddleware);
         // setting useCases
 
-        if (!isMiddleware) {
+        if (lable === 'asRouteHandler') {
             
             getUseCases(UseCases, "../../useCases").then((useCases: any) =>
     
-                controller(httpRequest, useCases)
+                controller(httpRequest, useCases, frameworks)
     
             ).then((httpResponse:any) => {
     
@@ -38,15 +37,18 @@ export default function(controller:any, isMiddleware:boolean = false) {
                 res.status(500).send({ error: 'An unkown error occurred.' })
             });
 
-        }else {
+        }else if (lable === 'asMiddleware') {
             getUseCases(UseCases, "../../useCases").then((useCases: any) =>
     
-                controller(httpRequest, useCases, next)
+                controller(httpRequest, useCases, next, frameworks)
     
             ).catch((e:any) => {
                 logger.error(e)
                 res.status(500).send({ error: 'An unkown error occurred.' })
             });
+        }else {
+            logger.error('Invalid lable for handler')
+            process.exit(0);
         }
         
         

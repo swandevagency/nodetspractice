@@ -1,4 +1,4 @@
-module.exports = (app:any, controllers:any, callBack:any) => {
+module.exports = (app:any, controllers:any, callBack:any, frameworks:any) => {
 
     const {
 
@@ -9,11 +9,18 @@ module.exports = (app:any, controllers:any, callBack:any) => {
         }
     
     } = controllers;
+
+    const {
+        generatePassword
+    } = frameworks;
     
     
-    app.get('/login', callBack(login));
-    app.get('/register', callBack(register));
-    app.get('/checkAuthStatus', callBack(checkAuthStatus));
+    app.post('/register', callBack(register, "asRouteHandler", {
+        generatePassword
+    }));
+
+    app.get('/login', callBack(login, "asRouteHandler"));
+    app.get('/checkAuthStatus', callBack(checkAuthStatus, "asRouteHandler"));
 
     return app;
     
