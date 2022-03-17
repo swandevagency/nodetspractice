@@ -11,12 +11,18 @@ module.exports = (app:any, controllers:any, callBack:any, frameworks:any) => {
     } = controllers;
 
     const {
-        generatePassword
+
+        generatePassword,
+        encryption,
+        generateId
+        
     } = frameworks;
     
     
     app.post('/register', callBack(register, "asRouteHandler", {
-        generatePassword
+        generatePassword,
+        encryption,
+        generateId
     }));
 
     app.get('/login', callBack(login, "asRouteHandler"));

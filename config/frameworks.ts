@@ -4,5 +4,13 @@ export default [
     {
         name: "generatePassword",
         url: "/generatePassword/index"
+    },
+    {
+        name: "encryption",
+        url: "/encryption/index"
+    },
+    {
+        name: "generateId",
+        url: "/generateId/index"
     }
 ]

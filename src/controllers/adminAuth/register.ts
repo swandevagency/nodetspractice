@@ -10,7 +10,11 @@ export default async(request: any, useCases: any, frameworks: any) => {
     
 
     const {
-        generatePassword
+
+        generatePassword,
+        encryption,
+        generateId
+
     } = frameworks;
 
     // importing usecases
@@ -42,11 +46,15 @@ export default async(request: any, useCases: any, frameworks: any) => {
         
 
         const createdAdmin = await createAdmin(
-            {username, 
-            first_name, 
-            last_name, 
-            email},
-            generatePassword
+            {
+                username, 
+                first_name, 
+                last_name, 
+                email
+            },
+            generatePassword,
+            encryption,
+            generateId
         );
 
         // returning the request
