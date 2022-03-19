@@ -1,31 +1,56 @@
-module.exports = (app:any, controllers:any, callBack:any, frameworks:any) => {
+module.exports = (
+    {
+        app, 
+        controllers, 
+        callBack, 
+        frameworks
+    }:any = {}
+) => {
+    
 
     const {
 
         adminAuth:{
             login,
             register,
-            checkAuthStatus
+            checkAuthStatus,
         }
     
     } = controllers;
 
+    
     const {
-
+        
         generatePassword,
         encryption,
-        generateId
+        generateId,
+        sendMail,
+        tokenFunctions
         
     } = frameworks;
     
     
+    
     app.post('/register', callBack(register, "asRouteHandler", {
+
         generatePassword,
         encryption,
-        generateId
+        generateId,
+        sendMail,
+        tokenFunctions
+
+    }));
+    
+
+    app.post('/login', callBack(login, "asRouteHandler", {
+
+        encryption,
+        tokenFunctions,
+        sendMail
+
     }));
 
-    app.get('/login', callBack(login, "asRouteHandler"));
+
     app.get('/checkAuthStatus', callBack(checkAuthStatus, "asRouteHandler"));
 
     return app;

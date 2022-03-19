@@ -3,16 +3,20 @@ export default async (
 
     {
 
-    username = '', 
-    first_name = '', 
-    last_name ='', 
-    email ='',
+        username = '', 
+        first_name = '', 
+        last_name ='', 
+        email ='',
+        password,
+        mailPassword = false
 
-    } = {},
+    }:any = {},
 
     generatePassword:any,
     encryption:any,
-    generateId:any
+    generateId:any,
+    sendMail:any,
+    tokenFunctions:any
 ) => {
     
     try {
@@ -23,6 +27,7 @@ export default async (
 
             admin: {
                 validateAdminFields,
+                validateAdminName
             }
 
         } = enteties;
@@ -31,20 +36,33 @@ export default async (
 
             admin : {
                 createAdmin,
-            }
+            },
 
         } = databaseFunctions;
 
-        // generating a safe password for admin
+        // generating a safe password for admin if mail password is true
+
+        let generatedPassword;
     
-        const generatedPassword = await generatePassword();
+        if (mailPassword === true) {
+
+            generatedPassword = await generatePassword();
+
+        }else {
+
+            generatePassword = password;
+
+        }
         
         // validating admin fields
 
-        const generatedAdmin = validateAdminFields({
-            username, 
+        await validateAdminName({
             first_name, 
             last_name, 
+        })
+
+        const generatedAdmin = validateAdminFields({
+            username, 
             email, 
             password: generatedPassword
         });
@@ -55,30 +73,54 @@ export default async (
 
         // generateing admin hash data
 
-        const generatedHash = await encryption.encrypt(generatedId, generatedPassword);
+        const generatedHash = await encryption.encrypt(generatedId, generatedAdmin.password);
 
         // adding admin to the database
-        logger.debug("asdlkj");
+
         const adminAddedToDatabase = await createAdmin({
             id: generatedId,
-            first_name: generatedAdmin.first_name,
-            last_name: generatedAdmin.last_name,
+            first_name,
+            last_name,
             email: generatedAdmin.email,
             username: generatedAdmin.username,
             hashedData: generatedHash
         });
 
-        logger.debug(adminAddedToDatabase);
-        // emailing the password and the login link
+        // generating a token
 
-        // returning the result
-    
-        return Object.freeze({
+        const token = await tokenFunctions.generate({
+            payload: {   
+                id: adminAddedToDatabase.id,
+                email: adminAddedToDatabase.email,
+                first_name: adminAddedToDatabase.first_name,
+                last_name: adminAddedToDatabase.last_name,
+            },
+            key: keys.secret.adminEmailAuthToken,
+            expireTime: '120'
+        })
+        
+        // mailing the password
+        await sendMail.sendPassword({
+            email: adminAddedToDatabase.email,
             first_name: adminAddedToDatabase.first_name,
             last_name: adminAddedToDatabase.last_name,
-            email: adminAddedToDatabase.email,
-            username: adminAddedToDatabase.username,
+            password: generatedPassword
         });
+
+        // mailing the token !
+
+        await sendMail.sendToken({
+            email: adminAddedToDatabase.email,
+            first_name: adminAddedToDatabase.first_name,
+            last_name: adminAddedToDatabase.last_name,
+            token
+        });
+
+        // returning the request !
+
+        return Object.freeze({
+            message: "Admin created !"
+        })
 
     } catch (error) {
         throw error;

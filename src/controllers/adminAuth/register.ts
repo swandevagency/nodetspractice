@@ -6,14 +6,15 @@ export default async(request: any, useCases: any, frameworks: any) => {
         'Content-Type': 'application/json'
     }
 
-    // importing the functions from frameworks
-    
+    // importing the functions from frameworks 
 
     const {
 
         generatePassword,
         encryption,
-        generateId
+        generateId,
+        sendMail,
+        tokenFunctions
 
     } = frameworks;
 
@@ -22,8 +23,7 @@ export default async(request: any, useCases: any, frameworks: any) => {
     const {
         
         admin:{
-            createAdmin,
-            emailToAdmin
+            createAdmin
         }
         
     } = useCases
@@ -35,7 +35,8 @@ export default async(request: any, useCases: any, frameworks: any) => {
         username, 
         first_name, 
         last_name, 
-        email
+        email,
+        mailPassword
 
     } = request.body;
 
@@ -50,11 +51,14 @@ export default async(request: any, useCases: any, frameworks: any) => {
                 username, 
                 first_name, 
                 last_name, 
-                email
+                email,
+                mailPassword
             },
             generatePassword,
             encryption,
-            generateId
+            generateId,
+            sendMail,
+            tokenFunctions
         );
 
         // returning the request

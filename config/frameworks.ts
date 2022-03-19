@@ -12,5 +12,13 @@ export default [
     {
         name: "generateId",
         url: "/generateId/index"
+    },
+    {
+        name: "sendMail",
+        url: "/sendMail/index"
+    },
+    {
+        name: "tokenFunctions",
+        url: "/tokenFunctions/index"
     }
 ]

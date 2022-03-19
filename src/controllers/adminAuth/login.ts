@@ -1,17 +1,28 @@
-export default async(request: any, useCases: any) => {
+export default async(request: any, useCases: any, frameworks:any) => {
 
     const {
-        username, 
-        first_name, 
-        last_name, 
-        email
+
+        username,
+        email,
+        password
+
     } = request.body;
 
     const {
+
         admin: {
-            createAdmin
+            authenticateAdmin
         }
+
     } = useCases;
+
+    const {
+
+        encryption,
+        tokenFunctions,
+        sendMail
+
+    } = frameworks;
 
     const headers = {
         'Content-Type': 'application/json'
@@ -19,17 +30,36 @@ export default async(request: any, useCases: any) => {
 
     try {
         
+        const token = await authenticateAdmin(
+            {
+                username,
+                email,
+                password,
+    
+            },
+            encryption,
+            tokenFunctions,
+            sendMail
+        ); 
 
         return {
+            headers,
             statusCode: 200,
             body: {
-                message: "admin created !",
-                email: createAdmin.email,
+                message: token.msg
             }
         }
 
     } catch (error) {
-        
+        logger.error(error);
+        return{
+            headers,
+            statusCode: 400,
+            body: {
+                error: error.message
+            }
+    
+        }
     }
     
 }

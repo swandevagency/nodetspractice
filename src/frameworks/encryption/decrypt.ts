@@ -9,7 +9,7 @@ export default (decryptionFunction:any) => {
         }
         catch(ex)
         {
-            return ex;
+            throw ex;
         }
     
     }

@@ -24,5 +24,9 @@ export default  {
             'authorization',
         ],
     },
+
+    secret: {
+        adminEmailAuthToken: "yoyoyoyoyo"
+    }
     
 }
