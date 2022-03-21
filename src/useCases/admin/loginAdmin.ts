@@ -3,14 +3,11 @@ export default async (
     {
         username,
         email,
-        password,
-        token
-
 
     }:any = {},
 
-    encryption:any,
-    tokenFunctions:any
+    tokenFunctions:any,
+    sendMail:any
 
 ) => {
     
@@ -21,7 +18,6 @@ export default async (
 
             admin: {
                 validateAdminCredentials,
-                validateAdminPassword
             }
 
         } = enteties;
@@ -41,10 +37,6 @@ export default async (
             email,
         });
 
-        const {password:validatedPassword} = await validateAdminPassword({
-            password
-        });
-
         // making sure that the admin exists
 
         const adminRetrivedFromDatabase = await getAdminByCredentials({
@@ -52,42 +44,33 @@ export default async (
             email: generatedAdmin.email,
         });
 
-        if (adminRetrivedFromDatabase.blocked) {
-            throw new Error('Access denied !')
-        }
-
-        // validating password
-
-        await encryption.decrypt(adminRetrivedFromDatabase.hashedData, validatedPassword);
-
-        // validating token
-        
-        const tokenIsValid =await tokenFunctions.validate({
-            token,
-            key: keys.secret.adminEmailAuthToken
-        });
-
-        if (!tokenIsValid) {
-            throw new Error('Token expired !');
-        }
 
         // generating token
 
-
-        const refreshToken = await tokenFunctions.generate({
+        const token = await tokenFunctions.generate({
             payload: {   
                 id: adminRetrivedFromDatabase.id,
                 email: adminRetrivedFromDatabase.email,
                 first_name: adminRetrivedFromDatabase.first_name,
                 last_name: adminRetrivedFromDatabase.last_name,
             },
-            key: keys.secret.adminRefreshToken,
+            key: keys.secret.adminEmailAuthToken,
+            expireTime: '120'
+        });
+
+        // mailing back token
+
+        await sendMail.sendToken({
+            email: adminRetrivedFromDatabase.email,
+            first_name: adminRetrivedFromDatabase.first_name,
+            last_name: adminRetrivedFromDatabase.last_name,
+            token
         });
 
         // returning
 
         return Object.freeze({
-            refreshToken
+            msg: "Authenticated ! check your email to continue .."
         })
 
     }catch (error) {

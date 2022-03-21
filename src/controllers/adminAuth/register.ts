@@ -10,7 +10,6 @@ export default async(request: any, useCases: any, frameworks: any) => {
 
     const {
 
-        generatePassword,
         encryption,
         generateId,
         sendMail,
@@ -36,6 +35,7 @@ export default async(request: any, useCases: any, frameworks: any) => {
         first_name, 
         last_name, 
         email,
+        password,
         mailPassword
 
     } = request.body;
@@ -52,9 +52,9 @@ export default async(request: any, useCases: any, frameworks: any) => {
                 first_name, 
                 last_name, 
                 email,
+                password,
                 mailPassword
             },
-            generatePassword,
             encryption,
             generateId,
             sendMail,

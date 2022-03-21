@@ -1,9 +1,9 @@
 const {Client} = require("pg");
 
 import createAdmin from "./createAdmin";
-import getAdmin from "./getAdmin";
+import getAdminByCredentials from "./getAdminByCredentials";
 
 module.exports = {
     createAdmin: createAdmin(Client),
-    getAdmin: getAdmin(Client)
+    getAdminByCredentials: getAdminByCredentials(Client)
 }

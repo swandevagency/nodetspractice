@@ -1,7 +1,9 @@
 import createAdmin from "./createAdmin";
-import authenticateAdmin from "./authenticateAdmin";
+import loginAdmin from "./loginAdmin";
+import authenticateAdmin from "./authenticateAdmin"
 
 module.exports = {
     createAdmin,
+    loginAdmin,
     authenticateAdmin
 }

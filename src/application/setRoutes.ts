@@ -8,6 +8,7 @@ import routes from "../../config/routes";
 import controllers from "../../config/controllers";
 import frameworks from "../../config/frameworks";
 import getFunctions from "./modules/getFunctions";
+import cookieParser from "cookie-parser";
 
 
 export default async(server: any, app: any) => {
@@ -34,6 +35,9 @@ export default async(server: any, app: any) => {
 
     // setting the cors policies
     app.use(cors(corsPolicies));
+
+    // setting cookie parser
+    app.use(cookieParser());
 
     app.set('trust proxy', '127.0.0.1');
 

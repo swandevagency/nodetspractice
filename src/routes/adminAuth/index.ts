@@ -13,7 +13,8 @@ module.exports = (
         adminAuth:{
             login,
             register,
-            checkAuthStatus,
+            authenticate,
+            checkAuthStatus
         }
     
     } = controllers;
@@ -21,7 +22,6 @@ module.exports = (
     
     const {
         
-        generatePassword,
         encryption,
         generateId,
         sendMail,
@@ -33,7 +33,6 @@ module.exports = (
     
     app.post('/register', callBack(register, "asRouteHandler", {
 
-        generatePassword,
         encryption,
         generateId,
         sendMail,
@@ -44,14 +43,23 @@ module.exports = (
 
     app.post('/login', callBack(login, "asRouteHandler", {
 
-        encryption,
         tokenFunctions,
         sendMail
 
     }));
 
 
-    app.get('/checkAuthStatus', callBack(checkAuthStatus, "asRouteHandler"));
+    app.post('/authenticate', callBack(authenticate, "asRouteHandler", {
+        encryption,
+        tokenFunctions,
+        sendMail
+    }));
+
+    app.get('/checkAuthStatus', callBack(checkAuthStatus, "asRouteHandler", {
+
+        tokenFunctions,
+        
+    }));
 
     return app;
     

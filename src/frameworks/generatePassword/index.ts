@@ -1,4 +1,22 @@
-module.exports = () => {
+module.exports = (password:string, mailPassword:boolean) => {
+
+    return new Promise(async(resolve, reject) => {
+        if (mailPassword === true) {
+
+            const result = await generatePassword();
+            resolve(result);
+
+        }else {
+
+            resolve(password)
+
+        }
+    })
+    
+
+}
+
+function generatePassword() {
     return new Promise((resolve, reject) => {
 
         const charecters: [string, string, string, string] = [
@@ -32,5 +50,4 @@ module.exports = () => {
             return Math.floor(Math.random() * charecters[i].length)
         }
     })
-
 }

@@ -5,11 +5,11 @@ export default (decryptionFunction:any) => {
             const decrypt = decryptionFunction('aes256', key);
             let decrypted = decrypt.update(encryptedText, 'hex', 'utf8')
             decrypted += decrypt.final()
-            return decrypted
+            return true;
         }
         catch(ex)
         {
-            throw ex;
+            throw new Error("Invalid credentials !");
         }
     
     }

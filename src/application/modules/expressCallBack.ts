@@ -13,7 +13,8 @@ export default function(controller:any, lable:string = 'asRouteHandler', framewo
             ip: req.ip,
             method: req.method,
             path: req.path,
-            headers: req.headers
+            headers: req.headers,
+            // cookies: req.cookies || {}
         }
         // setting useCases
         
@@ -28,6 +29,14 @@ export default function(controller:any, lable:string = 'asRouteHandler', framewo
                 if (httpResponse.headers) {
                     res.set(httpResponse.headers);
                 }
+
+                // if (httpResponse.cookies) {
+                //     httpResponse.cookies.forEach((cookie:any) => {
+                //         const {key, value, options} = cookie;
+                //         res.cookie(key, value, options);
+                //     });
+                // }
+
                 res.type('json');
                 res.status(httpResponse.statusCode).send(httpResponse.body);
     

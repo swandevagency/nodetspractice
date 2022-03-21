@@ -9,8 +9,9 @@ export default (jwt:any) => {
 
         const Token = token.split(' ')[1];
         try{
-            await jwt.verify(Token, key);
-            return true;
+            const result = await jwt.verify(Token, key);
+            
+            return result;
         }catch (e) {
             return false;
         }

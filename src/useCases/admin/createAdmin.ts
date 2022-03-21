@@ -1,4 +1,3 @@
-
 export default async (
 
     {
@@ -12,7 +11,6 @@ export default async (
 
     }:any = {},
 
-    generatePassword:any,
     encryption:any,
     generateId:any,
     sendMail:any,
@@ -26,8 +24,9 @@ export default async (
         const {
 
             admin: {
-                validateAdminFields,
-                validateAdminName
+                validateAdminCredentials,
+                validateAdminName,
+                validateAdminPassword
             }
 
         } = enteties;
@@ -39,21 +38,6 @@ export default async (
             },
 
         } = databaseFunctions;
-
-        // generating a safe password for admin if mail password is true
-
-        let generatedPassword;
-    
-        if (mailPassword === true) {
-
-            generatedPassword = await generatePassword();
-
-        }else {
-
-            generatePassword = password;
-
-        }
-        
         // validating admin fields
 
         await validateAdminName({
@@ -61,10 +45,13 @@ export default async (
             last_name, 
         })
 
-        const generatedAdmin = validateAdminFields({
+        const generatedAdmin = validateAdminCredentials({
             username, 
             email, 
-            password: generatedPassword
+        });
+
+        const {password:validatedPassword} = await validateAdminPassword({
+            password
         });
 
         // generating uuid
@@ -73,7 +60,7 @@ export default async (
 
         // generateing admin hash data
 
-        const generatedHash = await encryption.encrypt(generatedId, generatedAdmin.password);
+        const generatedHash = await encryption.encrypt(generatedId, validatedPassword);
 
         // adding admin to the database
 
@@ -100,13 +87,16 @@ export default async (
         })
         
         // mailing the password
-        await sendMail.sendPassword({
-            email: adminAddedToDatabase.email,
-            first_name: adminAddedToDatabase.first_name,
-            last_name: adminAddedToDatabase.last_name,
-            password: generatedPassword
-        });
-
+        if (mailPassword) {
+            
+            await sendMail.sendPassword({
+                email: adminAddedToDatabase.email,
+                first_name: adminAddedToDatabase.first_name,
+                last_name: adminAddedToDatabase.last_name,
+                password: validatedPassword
+            });
+    
+        }
         // mailing the token !
 
         await sendMail.sendToken({
