@@ -3,12 +3,8 @@ export default (Client:any) => {
     return async(
         
         {
-            id,
-            username,
-            first_name,
-            last_name,
             email,
-            hashedData
+
         }:any = {}
     
     ) => {
@@ -19,15 +15,8 @@ export default (Client:any) => {
         
             await client.connect();
     
-            await client.query("begin");
+            const {rows: adminsFound} = await client.query("select * from admin where email = $1", [email]);
     
-            await client.query("insert into admin (id, username, first_name, last_name, email, hashed_data, blocked, confirmed, created_at) values ($1, $2, $3, $4, $5, $6, $7, $8)",
-            [id,username, first_name, last_name, email, hashedData, false, false, Date.now()]);
-    
-            const {rows: adminsFound} = await client.query("select email, first_name, last_name from admin where id = $1;", [id]);
-    
-            await client.query("commit");
-            
             return Object.freeze({
                 id: adminsFound[0].id,
                 first_name: adminsFound[0].first_name,
@@ -42,16 +31,10 @@ export default (Client:any) => {
             
     
         } catch (e:any) {
+
+            logger.error(e);
             
-            if (e.code == 23505) {
-                
-                throw new Error("Username or email already in use !");
-    
-            }else{
-    
-                throw new Error("An unexpected error occured !");
-    
-            }
+            throw new Error("No admin was found !");
             
     
         } finally{

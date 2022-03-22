@@ -1,12 +1,10 @@
 export default async (
 
     {
-        username,
         email,
 
     }:any = {},
 
-    tokenFunctions:any,
     sendMail:any
 
 ) => {
@@ -18,7 +16,6 @@ export default async (
 
             admin: {
                 validateAdminEmail,
-                validateAdminUsername,
             }
 
         } = enteties;
@@ -26,45 +23,28 @@ export default async (
         const {
 
             admin : {
-                getAdminByCredentials,
+                getAdminByEmail,
             },
 
         } = databaseFunctions;
 
         // validating the data before issuing the database
 
-        const {username: validatedUsername} = validateAdminUsername({username});
-
         const {email: validatedEmail} = validateAdminEmail({email});
 
         // making sure that the admin exists
 
-        const adminRetrivedFromDatabase = await getAdminByCredentials({
-            username: validatedUsername,
+        const adminRetrivedFromDatabase = await getAdminByEmail({
             email: validatedEmail,
         });
 
+        // mailing back username
 
-        // generating token
-
-        const token = await tokenFunctions.generate({
-            payload: {   
-                id: adminRetrivedFromDatabase.id,
-                email: adminRetrivedFromDatabase.email,
-                first_name: adminRetrivedFromDatabase.first_name,
-                last_name: adminRetrivedFromDatabase.last_name,
-            },
-            key: keys.secret.adminEmailAuthToken,
-            expireTime: '120'
-        });
-
-        // mailing back token
-
-        await sendMail.sendToken({
+        await sendMail.sendUsername({
             email: adminRetrivedFromDatabase.email,
             first_name: adminRetrivedFromDatabase.first_name,
             last_name: adminRetrivedFromDatabase.last_name,
-            token
+            username: adminRetrivedFromDatabase.username
         });
 
         // returning

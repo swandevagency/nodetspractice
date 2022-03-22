@@ -14,7 +14,8 @@ module.exports = (
             login,
             register,
             authenticate,
-            checkAuthStatus
+            checkAuthStatus,
+            forgotUsername
         }
     
     } = controllers;
@@ -55,11 +56,19 @@ module.exports = (
         sendMail
     }));
 
+
     app.get('/checkAuthStatus', callBack(checkAuthStatus, "asRouteHandler", {
 
         tokenFunctions,
         
     }));
+
+
+    app.post('/forgotUsername', callBack(forgotUsername, "asRouteHandler", {
+
+        sendMail
+
+    }))
 
     return app;
     

@@ -27,5 +27,10 @@ export default ({
     if (last_name.length > 50) {
         throw new Error ("last_name can not have more than 50 charecters !");
     }
+
+    return Object.freeze({
+        first_name,
+        last_name
+    })
 }
     

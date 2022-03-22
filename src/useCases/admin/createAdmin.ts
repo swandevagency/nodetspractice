@@ -24,7 +24,8 @@ export default async (
         const {
 
             admin: {
-                validateAdminCredentials,
+                validateAdminEmail,
+                validateAdminUsername,
                 validateAdminName,
                 validateAdminPassword
             }
@@ -40,15 +41,14 @@ export default async (
         } = databaseFunctions;
         // validating admin fields
 
-        await validateAdminName({
-            first_name, 
+        const {last_name: validatatedFirstName, last_name: validatatedLastName} =await validateAdminName({
+            first_name,
             last_name, 
         })
 
-        const generatedAdmin = validateAdminCredentials({
-            username, 
-            email, 
-        });
+        const {username: validatedUsername} = validateAdminUsername({username});
+
+        const {email: validatedEmail} = validateAdminEmail({email});
 
         const {password:validatedPassword} = await validateAdminPassword({
             password
@@ -66,10 +66,10 @@ export default async (
 
         const adminAddedToDatabase = await createAdmin({
             id: generatedId,
-            first_name,
-            last_name,
-            email: generatedAdmin.email,
-            username: generatedAdmin.username,
+            first_name: validatatedFirstName,
+            last_name: validatatedLastName,
+            username: validatedEmail,
+            email: validatedUsername,
             hashedData: generatedHash
         });
 

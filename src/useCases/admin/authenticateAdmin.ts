@@ -20,7 +20,8 @@ export default async (
         const {
 
             admin: {
-                validateAdminCredentials,
+                validateAdminEmail,
+                validateAdminUsername,
                 validateAdminPassword
             }
 
@@ -30,16 +31,16 @@ export default async (
 
             admin : {
                 getAdminByCredentials,
+                confirmAdmin
             },
 
         } = databaseFunctions;
 
         // validating the data before issuing the database
 
-        const generatedAdmin = validateAdminCredentials({
-            username, 
-            email,
-        });
+        const {username: validatedUsername} = validateAdminUsername({username});
+
+        const {email: validatedEmail} = validateAdminEmail({email});
 
         const {password:validatedPassword} = await validateAdminPassword({
             password
@@ -48,12 +49,20 @@ export default async (
         // making sure that the admin exists
 
         const adminRetrivedFromDatabase = await getAdminByCredentials({
-            username: generatedAdmin.username,
-            email: generatedAdmin.email,
+            username: validatedEmail,
+            email: validatedUsername,
         });
+
+        // blocking access to blocked admins !
 
         if (adminRetrivedFromDatabase.blocked) {
             throw new Error('Access denied !')
+        }
+
+        // confirming admin 
+
+        if (adminRetrivedFromDatabase.confirmed) {
+            await confirmAdmin({id: adminRetrivedFromDatabase.id});
         }
 
         // validating password

@@ -25,7 +25,9 @@ export default (Client:any) => {
                 email: adminsFound[0].email,
                 hashedData: adminsFound[0].hashed_data,
                 username: adminsFound[0].username,
-                blocked: adminsFound[0].blocked
+                blocked: adminsFound[0].blocked,
+                confirmed: adminsFound[0].confirmed,
+                createdAt: adminsFound[0].created_at
             })
             
     
@@ -33,7 +35,7 @@ export default (Client:any) => {
 
             logger.error(e);
             
-            throw new Error("Invalid credentials !");
+            throw new Error("No admin was found !");
             
     
         } finally{
