@@ -30,12 +30,16 @@ export default function(controller:any, lable:string = 'asRouteHandler', framewo
                     res.set(httpResponse.headers);
                 }
 
-                // if (httpResponse.cookies) {
-                //     httpResponse.cookies.forEach((cookie:any) => {
-                //         const {key, value, options} = cookie;
-                //         res.cookie(key, value, options);
-                //     });
-                // }
+                if (httpResponse.cookies) {
+                    httpResponse.cookies.forEach((cookie:any) => {
+                        const {key, value, options} = cookie;
+                        res.cookie(key, value, options);
+                    });
+                }
+
+                if (httpResponse.clearCookie) {
+                    res.clearCookie(httpResponse.clearCookie);
+                }
 
                 res.type('json');
                 res.status(httpResponse.statusCode).send(httpResponse.body);

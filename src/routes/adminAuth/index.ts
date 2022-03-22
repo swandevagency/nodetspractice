@@ -15,7 +15,8 @@ module.exports = (
             register,
             authenticate,
             checkAuthStatus,
-            forgotUsername
+            forgotUsername,
+            logout
         }
     
     } = controllers;
@@ -69,6 +70,12 @@ module.exports = (
         sendMail
 
     }))
+
+    // logout
+
+    app.get('/logout', callBack(logout, "asRouteHandler"))
+
+    // check for notifications
 
     return app;
     
