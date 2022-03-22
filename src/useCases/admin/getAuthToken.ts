@@ -40,7 +40,7 @@ export default async (
 
         const authToken = await tokenFunctions.generate({
             payload: refreshTokenIsValid.payload,
-            keys: keys.secret.adminAuthToken,
+            key: keys.secret.adminAuthToken,
             expireTime
         });
 
@@ -52,7 +52,6 @@ export default async (
                 firstName: admin.first_name,
                 lastName: admin.last_name,
                 email: admin.email,
-                username: admin.username,
             },
             authToken,
             tokenExpiresAt: `${expireTime.toString()} seconds`

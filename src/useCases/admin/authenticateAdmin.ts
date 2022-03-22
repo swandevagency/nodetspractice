@@ -67,27 +67,45 @@ export default async (
             key: keys.secret.adminEmailAuthToken
         });
 
-        if (!tokenIsValid) {
+        if (!tokenIsValid && tokenIsValid.payload.id !== adminRetrivedFromDatabase.id) {
             throw new Error('Token expired !');
         }
 
-        // generating token
+        // generating refresh token
 
+        const payload = {   
+            id: adminRetrivedFromDatabase.id,
+            email: adminRetrivedFromDatabase.email,
+            first_name: adminRetrivedFromDatabase.first_name,
+            last_name: adminRetrivedFromDatabase.last_name,
+        };
 
         const refreshToken = await tokenFunctions.generate({
-            payload: {   
-                id: adminRetrivedFromDatabase.id,
-                email: adminRetrivedFromDatabase.email,
-                first_name: adminRetrivedFromDatabase.first_name,
-                last_name: adminRetrivedFromDatabase.last_name,
-            },
+            payload,
             key: keys.secret.adminRefreshToken,
+        });
+
+        // generating auth token
+
+        const expireTime = 60 * 15;
+
+        const authToken = await tokenFunctions.generate({
+            payload,
+            keys: keys.secret.adminAuthToken,
+            expireTime
         });
 
         // returning
 
         return Object.freeze({
-            refreshToken
+            refreshToken,
+            admin: {
+                firstName: adminRetrivedFromDatabase.first_name,
+                lastName: adminRetrivedFromDatabase.last_name,
+                email: adminRetrivedFromDatabase.email,
+            },
+            authToken,
+            tokenExpiresAt: `${expireTime.toString()} seconds`
         })
 
     }catch (error) {

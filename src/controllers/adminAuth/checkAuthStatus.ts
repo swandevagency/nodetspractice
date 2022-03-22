@@ -22,7 +22,7 @@ export default async(request: any, useCases: any, frameworks: any) => {
 
         } = useCases
 
-        const {tokenExpiresAt, authToken} = await getAuthToken(
+        const {tokenExpiresAt, authToken, admin} = await getAuthToken(
             {
                 refreshToken
             },
@@ -33,6 +33,7 @@ export default async(request: any, useCases: any, frameworks: any) => {
             headers,
             statusCode: 200,
             body: {
+                admin,
                 authenticated: true,
                 tokenExpiresAt,
                 authToken

@@ -1,7 +1,7 @@
-import sendPassword from "./sendPassword";
+import sendUsername from "./sendUsername";
 import sendToken from "./sendToken";
 
 module.exports =  {
-    sendPassword,
+    sendUsername,
     sendToken
 }

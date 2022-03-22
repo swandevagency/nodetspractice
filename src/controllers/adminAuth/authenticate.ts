@@ -33,7 +33,7 @@ export default async(request: any, useCases: any, frameworks:any) => {
 
     try {
         
-        const {refreshToken} = await authenticateAdmin(
+        const {refreshToken, tokenExpiresAt, authToken, admin} = await authenticateAdmin(
             {
                 username,
                 email,
@@ -59,12 +59,15 @@ export default async(request: any, useCases: any, frameworks:any) => {
                         sameSite: true,
                         httpOnly: true,
                         secure: true,
-                        domain: 'example.com',
+                        // domain: 'example.com',
                     }
                 }
             ],
             body: {
-                msg: 'Authenticated !'
+                admin,
+                authenticated: true,
+                tokenExpiresAt,
+                authToken
             }
         }
 

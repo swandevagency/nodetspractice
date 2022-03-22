@@ -86,17 +86,6 @@ export default async (
             expireTime: '120'
         })
         
-        // mailing the password
-        if (mailPassword) {
-            
-            await sendMail.sendPassword({
-                email: adminAddedToDatabase.email,
-                first_name: adminAddedToDatabase.first_name,
-                last_name: adminAddedToDatabase.last_name,
-                password: validatedPassword
-            });
-    
-        }
         // mailing the token !
 
         await sendMail.sendToken({
