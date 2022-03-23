@@ -19,13 +19,7 @@ export default async(request: any, useCases: any, frameworks:any) => {
 
     } = useCases;
 
-    const {
-
-        encryption,
-        tokenFunctions,
-        sendMail
-
-    } = frameworks;
+    
 
     const headers = {
         'Content-Type': 'application/json'
@@ -41,9 +35,7 @@ export default async(request: any, useCases: any, frameworks:any) => {
                 token
     
             },
-            encryption,
-            tokenFunctions,
-            sendMail
+            frameworks
         ); 
 
         return {

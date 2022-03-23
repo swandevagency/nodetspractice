@@ -6,8 +6,10 @@ export default async (
 
     }:any = {},
 
-    tokenFunctions:any,
-    sendMail:any
+    {
+        tokenFunctions,
+        sendMail
+    }:any = {}
 
 ) => {
     

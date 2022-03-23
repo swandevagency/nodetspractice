@@ -6,17 +6,6 @@ export default async(request: any, useCases: any, frameworks: any) => {
         'Content-Type': 'application/json'
     }
 
-    // importing the functions from frameworks 
-
-    const {
-
-        encryption,
-        generateId,
-        sendMail,
-        tokenFunctions
-
-    } = frameworks;
-
     // importing usecases
     
     const {
@@ -53,10 +42,7 @@ export default async(request: any, useCases: any, frameworks: any) => {
                 email,
                 password,
             },
-            encryption,
-            generateId,
-            sendMail,
-            tokenFunctions
+            frameworks
         );
 
         // returning the request

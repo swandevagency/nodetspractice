@@ -1,10 +1,6 @@
 export default async(request: any, useCases: any, frameworks: any) => {
 
     const refreshToken = request.cookies.authorization;
-
-    const {
-        tokenFunctions
-    } = frameworks;
     
 
     const headers = {
@@ -26,7 +22,7 @@ export default async(request: any, useCases: any, frameworks: any) => {
             {
                 refreshToken
             },
-            tokenFunctions
+            frameworks
         )
         
         return{

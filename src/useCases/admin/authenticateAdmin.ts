@@ -4,13 +4,18 @@ export default async (
         username,
         email,
         password,
-        token
+        token,
+        platform,
 
 
     }:any = {},
 
-    encryption:any,
-    tokenFunctions:any
+    {
+        encryption,
+        tokenFunctions,
+        generateId
+        
+    }:any = {}
 
 ) => {
     
@@ -31,7 +36,8 @@ export default async (
 
             admin : {
                 getAdminByCredentials,
-                confirmAdmin
+                confirmAdmin,
+                addRefreshTokenToDatabase
             },
 
         } = databaseFunctions;
@@ -91,11 +97,20 @@ export default async (
 
         // generating refresh token
 
+        const tokenId = generateId();
+
+        const {tokenId:tokenIdAddedToDatabase} = await addRefreshTokenToDatabase({
+            adminId: adminRetrivedFromDatabase.id,
+            platform,
+            tokenId
+        });
+
         const payload = {   
             id: adminRetrivedFromDatabase.id,
             email: adminRetrivedFromDatabase.email,
             first_name: adminRetrivedFromDatabase.first_name,
             last_name: adminRetrivedFromDatabase.last_name,
+            tokenId: tokenIdAddedToDatabase
         };
 
         const {adminRefreshToken, adminAuthToken} = keys.secret

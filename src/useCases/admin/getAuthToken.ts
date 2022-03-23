@@ -5,13 +5,19 @@ export default async (
 
     }:any = {},
 
-    tokenFunctions:any,
+    {
+
+        tokenFunctions
+        
+    }:any = {}
+    
 
 ) => {
 
     const {
         admin: {
-            getAdminById
+            getAdminById,
+            validateRefreshToken
         }
     } = databaseFunctions;
     
@@ -25,6 +31,19 @@ export default async (
         });
 
         if (!refreshTokenIsValid) {
+            throw new Error('Invalid refresh token !');
+        }
+
+        
+        // validating refresh token id
+        
+        const {tokenId, adminId} = refreshTokenIsValid.payload
+
+        if (
+            !refreshToken.payload || 
+            !refreshTokenIsValid.payload.tokenId ||
+            !await validateRefreshToken({tokenId, adminId})
+        ) {
             throw new Error('Invalid refresh token !');
         }
 

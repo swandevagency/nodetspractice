@@ -57,7 +57,8 @@ module.exports = (
 
         encryption,
         tokenFunctions,
-        sendMail
+        sendMail,
+        generateId
 
     }));
 

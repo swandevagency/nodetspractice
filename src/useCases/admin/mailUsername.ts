@@ -5,7 +5,11 @@ export default async (
 
     }:any = {},
 
-    sendMail:any
+    {
+        sendMail,
+
+    }:any = {},
+    
 
 ) => {
     

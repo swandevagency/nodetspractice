@@ -10,10 +10,15 @@ export default async (
 
     }:any = {},
 
-    encryption:any,
-    generateId:any,
-    sendMail:any,
-    tokenFunctions:any
+    {
+        encryption,
+        generateId,
+        sendMail,
+        tokenFunctions
+        
+    }:any = {}
+
+    
 ) => {
     
     try {
