@@ -46,6 +46,9 @@ export default function(controller:any, lable:string = 'asRouteHandler', framewo
     
             })
             .catch((e:any) => {
+
+                console.log(e);
+                
                 logger.error(e)
                 res.status(500).send({ error: 'An unkown error occurred.' })
             });

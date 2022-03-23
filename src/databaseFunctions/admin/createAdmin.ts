@@ -21,8 +21,8 @@ export default (Client:any) => {
     
             await client.query("begin");
     
-            await client.query("insert into admin (id, username, first_name, last_name, email, hashed_data, blocked, confirmed, created_at) values ($1, $2, $3, $4, $5, $6, $7, $8)",
-            [id,username, first_name, last_name, email, hashedData, false, false, Date.now()]);
+            await client.query("insert into admin (id, username, first_name, last_name, email, hashed_data, blocked, confirmed) values ($1, $2, $3, $4, $5, $6, $7, $8)",
+            [id,username, first_name, last_name, email, hashedData, false, false]);
     
             const {rows: adminsFound} = await client.query("select email, first_name, last_name from admin where id = $1;", [id]);
     
@@ -42,6 +42,8 @@ export default (Client:any) => {
             
     
         } catch (e:any) {
+            
+            logger.error(e);
             
             if (e.code == 23505) {
                 

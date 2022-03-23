@@ -44,7 +44,6 @@ export default async (
             email: validatedEmail,
         });
 
-
         // generating token
 
         const token = await tokenFunctions.generate({
@@ -57,6 +56,7 @@ export default async (
             key: keys.secret.adminEmailAuthToken,
             expireTime: '120'
         });
+        
 
         // mailing back token
 

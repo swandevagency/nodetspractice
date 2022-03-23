@@ -18,7 +18,8 @@ export default (Client:any) => {
             await client.connect();
     
             const {rows: adminsFound} = await client.query("select * from admin where username = $1 and email = $2", [username, email]);
-    
+            
+            
             return Object.freeze({
                 id: adminsFound[0].id,
                 first_name: adminsFound[0].first_name,

@@ -4,7 +4,9 @@ module.exports = (
         controllers, 
         callBack, 
         frameworks
+
     }:any = {}
+
 ) => {
     
 
@@ -52,9 +54,11 @@ module.exports = (
 
 
     app.post('/authenticate', callBack(authenticate, "asRouteHandler", {
+
         encryption,
         tokenFunctions,
         sendMail
+
     }));
 
 

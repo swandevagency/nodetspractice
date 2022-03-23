@@ -49,8 +49,8 @@ export default async (
         // making sure that the admin exists
 
         const adminRetrivedFromDatabase = await getAdminByCredentials({
-            username: validatedEmail,
-            email: validatedUsername,
+            username: validatedUsername,
+            email: validatedEmail,
         });
 
         // blocking access to blocked admins !
@@ -59,8 +59,9 @@ export default async (
             throw new Error('Access denied !')
         }
 
+        
         // confirming admin 
-
+        
         if (adminRetrivedFromDatabase.confirmed) {
             await confirmAdmin({id: adminRetrivedFromDatabase.id});
         }
@@ -71,12 +72,20 @@ export default async (
 
         // validating token
         
+        
         const tokenIsValid =await tokenFunctions.validate({
             token,
             key: keys.secret.adminEmailAuthToken
         });
 
-        if (!tokenIsValid && tokenIsValid.payload.id !== adminRetrivedFromDatabase.id) {
+        
+
+        if (
+            !tokenIsValid || 
+            !tokenIsValid.payload || 
+            !tokenIsValid.payload.id ||
+            tokenIsValid.payload.id !== adminRetrivedFromDatabase.id
+        ) {
             throw new Error('Token expired !');
         }
 
@@ -89,18 +98,21 @@ export default async (
             last_name: adminRetrivedFromDatabase.last_name,
         };
 
+        const {adminRefreshToken, adminAuthToken} = keys.secret
+        
         const refreshToken = await tokenFunctions.generate({
             payload,
-            key: keys.secret.adminRefreshToken,
+            key: adminRefreshToken,
         });
 
         // generating auth token
 
         const expireTime = 60 * 15;
+        
 
         const authToken = await tokenFunctions.generate({
             payload,
-            keys: keys.secret.adminAuthToken,
+            key: adminAuthToken,
             expireTime
         });
 

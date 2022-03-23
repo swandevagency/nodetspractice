@@ -7,7 +7,6 @@ export default async (
         last_name ='', 
         email ='',
         password,
-        mailPassword = false
 
     }:any = {},
 
@@ -20,6 +19,7 @@ export default async (
     try {
 
         // importing from enteties & database funcitions
+        
 
         const {
 
@@ -54,22 +54,24 @@ export default async (
             password
         });
 
+        
         // generating uuid
-
+        
         const generatedId = generateId();
 
         // generateing admin hash data
 
         const generatedHash = await encryption.encrypt(generatedId, validatedPassword);
 
+        
         // adding admin to the database
-
+        
         const adminAddedToDatabase = await createAdmin({
             id: generatedId,
             first_name: validatatedFirstName,
             last_name: validatatedLastName,
-            username: validatedEmail,
-            email: validatedUsername,
+            username: validatedUsername,
+            email: validatedEmail,
             hashedData: generatedHash
         });
 
