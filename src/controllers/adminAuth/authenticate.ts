@@ -5,6 +5,7 @@ export default async(request: any, useCases: any, frameworks:any) => {
         username,
         email,
         password,
+        platform
 
     } = request.body;
 
@@ -32,7 +33,8 @@ export default async(request: any, useCases: any, frameworks:any) => {
                 username,
                 email,
                 password,
-                token
+                token,
+                platform
     
             },
             frameworks

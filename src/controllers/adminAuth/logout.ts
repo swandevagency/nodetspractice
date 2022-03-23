@@ -1,10 +1,27 @@
-export default async() => {
+export default async(request:any, useCases:any, frameworks:any) => {
 
     const headers = {
         'Content-Type': 'application/json'
     };
 
+    const refreshToken = request.cookies.authorization;
+
+    const {
+
+        admin: {
+            clearRefreshToken
+        }
+
+    } = useCases
+
     try {
+
+        await clearRefreshToken(
+            {
+                refreshToken
+            },
+            frameworks
+        );
 
         return {
             headers,
