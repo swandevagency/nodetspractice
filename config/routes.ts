@@ -2,6 +2,6 @@
 export default [
     {
         name: "admin",
-        url: "/admin/index"
+        url: "/adminAuth/index"
     }
 ]

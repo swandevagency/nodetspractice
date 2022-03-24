@@ -1,21 +1,38 @@
-export default async(request: any, useCases: any) => {
+export default async(request: any, useCases: any, frameworks: any) => {
+
+    const refreshToken = request.cookies.authorization;
+    
 
     const headers = {
         'Content-Type': 'application/json'
     }
 
     try {
+
         
         const {
-            test
+            
+            admin: {
+                getAuthToken
+            }
+
         } = useCases
+
+        const {tokenExpiresAt, authToken, admin} = await getAuthToken(
+            {
+                refreshToken
+            },
+            frameworks
+        )
         
         return{
             headers,
             statusCode: 200,
             body: {
-                message: "yoyoyooyoyoy",
-                userCaseTest: test(2,3)
+                admin,
+                authenticated: true,
+                tokenExpiresAt,
+                authToken
             }
     
         }

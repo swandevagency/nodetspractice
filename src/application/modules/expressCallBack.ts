@@ -13,10 +13,11 @@ export default function(controller:any, lable:string = 'asRouteHandler', framewo
             ip: req.ip,
             method: req.method,
             path: req.path,
-            headers: req.headers
+            headers: req.headers,
+            // cookies: req.cookies || {}
         }
         // setting useCases
-
+        
         if (lable === 'asRouteHandler') {
             
             getUseCases(UseCases, "../../useCases").then((useCases: any) =>
@@ -28,11 +29,26 @@ export default function(controller:any, lable:string = 'asRouteHandler', framewo
                 if (httpResponse.headers) {
                     res.set(httpResponse.headers);
                 }
+
+                if (httpResponse.cookies) {
+                    httpResponse.cookies.forEach((cookie:any) => {
+                        const {key, value, options} = cookie;
+                        res.cookie(key, value, options);
+                    });
+                }
+
+                if (httpResponse.clearCookie) {
+                    res.clearCookie(httpResponse.clearCookie);
+                }
+
                 res.type('json');
                 res.status(httpResponse.statusCode).send(httpResponse.body);
     
             })
             .catch((e:any) => {
+
+                console.log(e);
+                
                 logger.error(e)
                 res.status(500).send({ error: 'An unkown error occurred.' })
             });

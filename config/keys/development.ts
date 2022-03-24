@@ -24,5 +24,11 @@ export default  {
             'authorization',
         ],
     },
+
+    secret: {
+        adminEmailAuthToken: "yoyoyoyoyo",
+        adminRefreshToken: ";asdlkfj;lsak",
+        adminAuthToken: "20938riujnk"
+    }
     
 }

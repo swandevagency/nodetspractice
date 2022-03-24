@@ -38,22 +38,26 @@ const format = winston.format.combine(
   ),
 )
 
-// Define which transports the logger must use to print out messages. 
-// In this example, we are using three different transports 
-const transports = [
-  // Allow the use the console to print the messages
-  new winston.transports.Console(),
+// Define which transports the logger must use to print out messages.
+let transports: any;
 
-  // Allow to print all the error level messages inside the error.log file
-  new winston.transports.File({
-    filename: 'logs/error.log',
-    level: 'error',
-  }),
+if (process.env.NODE_ENV === 'production') {
+  transports = [
+    new winston.transports.Console(),
+  
+    // Allow to print all the error level messages inside the error.log file
+    new winston.transports.File({
+      filename: 'logs/error.log',
+      level: 'error',
+    }),
 
-  // Allow to print all the error message inside the all.log file
-  // (also the error log that are also printed inside the error.log(
-  new winston.transports.File({ filename: 'logs/all.log' }),
-]
+    new winston.transports.File({ filename: 'logs/all.log' }),
+  ]
+}else {
+  transports = [
+    new winston.transports.Console(),
+  ]
+}
 
 // Create the logger instance that has to be exported 
 // and used to log messages.

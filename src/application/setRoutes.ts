@@ -8,6 +8,8 @@ import routes from "../../config/routes";
 import controllers from "../../config/controllers";
 import frameworks from "../../config/frameworks";
 import getFunctions from "./modules/getFunctions";
+import cookieParser from "cookie-parser";
+const ratelimiter = require("express-rate-limit");
 
 
 export default async(server: any, app: any) => {
@@ -35,29 +37,56 @@ export default async(server: any, app: any) => {
     // setting the cors policies
     app.use(cors(corsPolicies));
 
+    // setting cookie parser
+    app.use(cookieParser());
+
+    app.set('trust proxy', '127.0.0.1');
+
     try {
+
+        const router = server.Router();
+        const routesBaseURL = "../routes";
+
+        
 
         // setting controllers
         const importedControllers = await getFunctions(controllers, "../../controllers");
 
-        const importedFrameworks = await getFunctions(frameworks, "../../frameworks")
+        const importedFrameworks = await getFunctions(frameworks, "../../frameworks");
 
         // setting the routes
-        routes.forEach(async(route:any) => {
-            
-            const router = server.Router();
-            const routesBaseURL = "../routes";
-            
-            
-            app.use(
-                `${serverInfo.baseURL}/${route.name}`, 
-                require(`${routesBaseURL}${route.url}`)(router, importedControllers, callBack, importedFrameworks)
-            );
+        
 
-        });
+        await loadRoutes();
+
+        function loadRoutes() {
+
+            return new Promise((resolve, reject) => {
+
+                routes.forEach((route:any) => {
+                    
+                    app.use(
+                        `${serverInfo.baseURL}/${route.name}`, 
+                        require(`${routesBaseURL}${route.url}`)({
+                            app:router, 
+                            controllers: importedControllers, 
+                            callBack, 
+                            frameworks: importedFrameworks,
+                            ratelimiter
+                        })
+                    );
+            
+                });
+        
+                resolve(null);
+                
+            });
+
+        }
 
     } catch (error) {
         logger.error(error);
     }
     
 }
+

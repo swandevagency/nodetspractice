@@ -2,7 +2,6 @@ export default async(request: any, useCases: any, frameworks:any) => {
 
     const {
 
-        username,
         email,
 
     } = request.body;
@@ -10,10 +9,12 @@ export default async(request: any, useCases: any, frameworks:any) => {
     const {
 
         admin: {
-            loginAdmin
+            mailUsername
         }
 
     } = useCases;
+
+    
 
     const headers = {
         'Content-Type': 'application/json'
@@ -21,9 +22,8 @@ export default async(request: any, useCases: any, frameworks:any) => {
 
     try {
         
-        const token = await loginAdmin(
+        await mailUsername(
             {
-                username,
                 email,
     
             },
@@ -34,7 +34,7 @@ export default async(request: any, useCases: any, frameworks:any) => {
             headers,
             statusCode: 200,
             body: {
-                message: token.msg
+                message: "Username was sent to your email !"
             }
         }
 

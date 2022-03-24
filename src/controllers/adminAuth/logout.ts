@@ -1,40 +1,34 @@
-export default async(request: any, useCases: any, frameworks:any) => {
-
-    const {
-
-        username,
-        email,
-
-    } = request.body;
-
-    const {
-
-        admin: {
-            loginAdmin
-        }
-
-    } = useCases;
+export default async(request:any, useCases:any, frameworks:any) => {
 
     const headers = {
         'Content-Type': 'application/json'
     };
 
+    const refreshToken = request.cookies.authorization;
+
+    const {
+
+        admin: {
+            clearRefreshToken
+        }
+
+    } = useCases
+
     try {
-        
-        const token = await loginAdmin(
+
+        await clearRefreshToken(
             {
-                username,
-                email,
-    
+                refreshToken
             },
             frameworks
-        ); 
+        );
 
         return {
             headers,
             statusCode: 200,
+            clearCookie: 'authorization',
             body: {
-                message: token.msg
+                message: "You have successfully loged out !"
             }
         }
 

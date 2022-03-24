@@ -2,7 +2,6 @@ export default async(request: any, useCases: any, frameworks:any) => {
 
     const {
 
-        username,
         email,
 
     } = request.body;
@@ -10,10 +9,12 @@ export default async(request: any, useCases: any, frameworks:any) => {
     const {
 
         admin: {
-            loginAdmin
+            checkEmailExistance
         }
 
     } = useCases;
+
+    
 
     const headers = {
         'Content-Type': 'application/json'
@@ -21,22 +22,35 @@ export default async(request: any, useCases: any, frameworks:any) => {
 
     try {
         
-        const token = await loginAdmin(
+        const emailExists = await checkEmailExistance(
             {
-                username,
                 email,
     
             },
             frameworks
         ); 
 
-        return {
-            headers,
-            statusCode: 200,
-            body: {
-                message: token.msg
+        if (emailExists) {
+            
+            return {
+                headers,
+                statusCode: 400,
+                body: {
+                    message: "Email taken !"
+                }
+            }
+
+        }else {
+
+            return {
+                headers,
+                statusCode: 200,
+                body: {
+                    message: "You are free to use this email !"
+                }
             }
         }
+
 
     } catch (error:any) {
         logger.error(error);

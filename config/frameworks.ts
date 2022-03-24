@@ -2,7 +2,19 @@
 
 export default [
     {
-        name: "generatePassword",
-        url: "/generatePassword/index"
+        name: "encryption",
+        url: "/encryption/index"
+    },
+    {
+        name: "generateId",
+        url: "/generateId/index"
+    },
+    {
+        name: "sendMail",
+        url: "/sendMail/index"
+    },
+    {
+        name: "tokenFunctions",
+        url: "/tokenFunctions/index"
     }
 ]

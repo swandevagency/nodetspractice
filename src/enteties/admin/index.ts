@@ -1,5 +1,11 @@
-import validateAdminFields from "./validateAdminFields";
+import validateAdminUsername from "./validateAdminUsername";
+import validateAdminName from "./validateAdminName";
+import validateAdminPassword from "./validateAdminPassword";
+import validateAdminEmail from "./validateAdminEmail";
 
 module.exports ={
-    validateAdminFields,
+    validateAdminUsername,
+    validateAdminEmail,
+    validateAdminName,
+    validateAdminPassword
 }

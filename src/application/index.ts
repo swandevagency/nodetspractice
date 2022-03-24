@@ -3,7 +3,6 @@ import server from "express";
 
 import setLogger from "./setLogger";
 import setKeys from "./setKeys";
-import setDatabase from "./setDatabase";
 import setRoutes from "./setRoutes";
 
 
@@ -17,9 +16,6 @@ export default  async() => {
         await setKeys();
     
         await setLogger();
-    
-        // set database functions
-        await setDatabase();
     
         // setting routes
         await setRoutes(server, app);
