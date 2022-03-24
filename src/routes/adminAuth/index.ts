@@ -3,7 +3,8 @@ module.exports = (
         app, 
         controllers, 
         callBack, 
-        frameworks
+        frameworks,
+        ratelimiter
 
     }:any = {}
 
@@ -18,7 +19,9 @@ module.exports = (
             authenticate,
             checkAuthStatus,
             forgotUsername,
-            logout
+            logout,
+            checkUsernameExistance,
+            checkEmailExistance
         }
     
     } = controllers;
@@ -29,58 +32,146 @@ module.exports = (
         encryption,
         generateId,
         sendMail,
-        tokenFunctions
+        tokenFunctions,
         
     } = frameworks;
+
+    app.get(
+
+        '/checkExistance/username',
+
+        ratelimiter({
+            windowMs: 5000,
+            max: 2
+        }),
+
+        callBack(checkUsernameExistance, "asRouteHandler")
+
+    );
+
+    app.get(
+
+        '/checkExistance/email',
+
+        ratelimiter({
+            windowMs: 5000,
+            max: 2
+        }),
+
+        callBack(checkEmailExistance, "asRouteHandler")
+
+    )
     
     
-    
-    app.post('/register', callBack(register, "asRouteHandler", {
+    app.post(
 
-        encryption,
-        generateId,
-        sendMail,
-        tokenFunctions
+        '/register', 
 
-    }));
-    
+        ratelimiter({
+            windowMs: 5000,
+            max: 1
+        }),
 
-    app.post('/login', callBack(login, "asRouteHandler", {
+        callBack(register, "asRouteHandler", {
 
-        tokenFunctions,
-        sendMail
+            encryption,
+            generateId,
+            sendMail,
+            tokenFunctions
 
-    }));
-
-
-    app.post('/authenticate', callBack(authenticate, "asRouteHandler", {
-
-        encryption,
-        tokenFunctions,
-        sendMail,
-        generateId
-
-    }));
-
-
-    app.get('/checkAuthStatus', callBack(checkAuthStatus, "asRouteHandler", {
-
-        tokenFunctions,
+        })
         
-    }));
+    );
+    
 
+    app.post(
 
-    app.post('/forgotUsername', callBack(forgotUsername, "asRouteHandler", {
+        '/login', 
 
-        sendMail
+        ratelimiter({
+            windowMs: 8000,
+            max: 1
+        }),
 
-    }))
+        callBack(login, "asRouteHandler", {
 
-    // logout
+            tokenFunctions,
+            sendMail
 
-    app.get('/logout', callBack(logout, "asRouteHandler"))
+        })
 
-    // check for notifications
+    );
+
+    app.post(
+
+        '/authenticate', 
+
+        ratelimiter({
+            windowMs: 5000,
+            max: 3
+        }),
+
+        callBack(authenticate, "asRouteHandler", {
+
+            encryption,
+            tokenFunctions,
+            sendMail,
+            generateId
+
+        })
+
+    );
+
+    app.get(
+
+        '/checkAuthStatus', 
+
+        ratelimiter({
+            windowMs: 5000,
+            max: 7
+        }),
+        
+        callBack(checkAuthStatus, "asRouteHandler", {
+
+            tokenFunctions,
+            
+        })
+    );
+
+    
+    app.post(
+
+        '/forgotUsername', 
+
+        ratelimiter({
+            windowMs: 5000,
+            max: 1
+        }),
+
+        callBack(forgotUsername, "asRouteHandler", {
+
+            sendMail
+
+        })
+    )
+
+    app.get(
+
+        '/logout', 
+
+        ratelimiter({
+            windowMs: 5000,
+            max: 1
+        }),
+
+        callBack(logout, "asRouteHandler", {
+
+            tokenFunctions
+
+        })
+
+    )
+
 
     return app;
     

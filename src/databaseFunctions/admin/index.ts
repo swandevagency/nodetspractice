@@ -6,7 +6,9 @@ import getAdminById from "./getAdminById";
 import getAdminByEmail from "./getAdminByEmail";
 import confirmAdmin from "./confirmAdmin";
 import addRefreshTokenToDatabase from "./addRefreshTokenToDatabase";
-import validateRefreshToken from "./validateRefreshToken"
+import validateRefreshToken from "./validateRefreshToken";
+import checkEmailExistance from "./checkEmailExistance";
+import checkUsernameExistance from "./checkUsernameExistance";
 
 module.exports = {
     createAdmin: createAdmin(Client),
@@ -15,6 +17,8 @@ module.exports = {
     getAdminByEmail: getAdminByEmail(Client),
     confirmAdmin: confirmAdmin(Client),
     validateRefreshToken: validateRefreshToken(Client),
-    addRefreshTokenToDatabase: addRefreshTokenToDatabase(Client)
+    addRefreshTokenToDatabase: addRefreshTokenToDatabase(Client),
+    checkEmailExistance: checkEmailExistance(Client),
+    checkUsernameExistance: checkUsernameExistance(Client),
 
 }

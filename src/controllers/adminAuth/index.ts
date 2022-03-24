@@ -3,6 +3,8 @@ import login from "./login";
 import checkAuthStatus from "./checkAuthStatus";
 import authenticate from "./authenticate";
 import forgotUsername from "./forgotUsername";
+import checkEmailExistance from "./checkEmailExistance";
+import checkUsernameExistance from "./checkUsernameExistance";
 
 
 module.exports =  {
@@ -10,5 +12,8 @@ module.exports =  {
     checkAuthStatus,
     register,
     authenticate,
-    forgotUsername
+    forgotUsername,
+    checkEmailExistance,
+    checkUsernameExistance
+
 }

@@ -9,6 +9,7 @@ import controllers from "../../config/controllers";
 import frameworks from "../../config/frameworks";
 import getFunctions from "./modules/getFunctions";
 import cookieParser from "cookie-parser";
+const ratelimiter = require("express-rate-limit");
 
 
 export default async(server: any, app: any) => {
@@ -70,7 +71,8 @@ export default async(server: any, app: any) => {
                             app:router, 
                             controllers: importedControllers, 
                             callBack, 
-                            frameworks: importedFrameworks
+                            frameworks: importedFrameworks,
+                            ratelimiter
                         })
                     );
             

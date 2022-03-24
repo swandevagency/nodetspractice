@@ -17,6 +17,10 @@ export default (Client:any) => {
             await client.connect();
     
             const {rows: adminsFound} = await client.query("select * from admin where id = $1", [id]);
+
+            if (!adminsFound.length) {
+                throw new Error("No admin was found !");
+            }
     
             return Object.freeze({
                 id: adminsFound[0].id,
@@ -35,7 +39,7 @@ export default (Client:any) => {
 
             logger.error(e);
             
-            throw new Error("No admin was found !");
+            throw new Error("An unexpected error occured !");
             
     
         } finally{
